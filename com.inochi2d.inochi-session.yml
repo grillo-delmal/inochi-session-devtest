@@ -1,0 +1,58 @@
+id: com.inochi2d.inochi-session
+runtime: org.freedesktop.Platform
+runtime-version: '22.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.ldc
+  - org.freedesktop.Sdk.Extension.llvm14
+command: inochi-session
+finish-args:
+  - --device=all     #OpenGL rendering, webcams (may be required? not sure)
+  - --socket=fallback-x11
+  - --share=ipc
+  - --socket=wayland
+  - --filesystem=host     #This is a dev tool, it should probably have as much access to the host as it can. Also needs it for "Recent Files"
+
+modules:
+
+  - shared-modules/SDL2/SDL2-2.26.1-with-libdecor.json
+
+  # --- Inochi Session ---
+  - name: Inochi-Session
+    buildsystem: simple
+    build-options:
+      append-path: /usr/lib/sdk/ldc/bin
+    build-commands:
+      - chmod +x ./gentl.sh; ./gentl.sh
+      - dub add-path .flatpak-dub;
+        dub build --skip-registry=all --config=meta;
+        dub build --skip-registry=all --build=release --config=barebones --debug=InExperimental
+      - install -m 755 ./out/inochi-session /app/bin/inochi-session
+      # Uncomment when session translations are actually a thing. 
+      #- install -Dm644 ./out/*.mo /app/bin
+
+    sources:
+      - dub-add-local-sources.json
+      - latest-session.yml
+
+  - name: Metadata
+    buildsystem: simple
+    build-commands:
+
+      - install -Dm644 com.inochi2d.inochi-session.metainfo.xml /app/share/metainfo/com.inochi2d.inochi-session.metainfo.xml
+      - install -Dm644 ./session/icon_128.png /app/share/icons/hicolor/128x128/apps/com.inochi2d.inochi-session.png
+      - install -Dm644 ./session/icon_256.png /app/share/icons/hicolor/256x256/apps/com.inochi2d.inochi-session.png
+      - install -Dm644 ./session/icon_512.png /app/share/icons/hicolor/512x512/apps/com.inochi2d.inochi-session.png
+      - install -Dm644 inochi-session.desktop /app/share/applications/com.inochi2d.inochi-session.desktop
+
+    sources:
+      - type: git
+        url: https://github.com/Inochi2D/branding.git
+        commit: 7caad43eb2b6d423275a3d972ac1e7ee36da2850
+
+      - type: file
+        path: inochi-session.desktop
+
+      - type: file
+        path: com.inochi2d.inochi-session.metainfo.xml
+

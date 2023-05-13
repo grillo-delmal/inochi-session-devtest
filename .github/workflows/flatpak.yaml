@@ -8,13 +8,13 @@ on:
   workflow_dispatch:
 
 env:
-  APP_ID: com.inochi2d.inochi-creator
-  MANIFEST_PATH: com.inochi2d.inochi-creator.yml
-  FLATPAK_BUNDLE: inochi-creator
+  APP_ID: com.inochi2d.inochi-session
+  MANIFEST_PATH: com.inochi2d.inochi-session.yml
+  FLATPAK_BUNDLE: inochi-session
   FLATPAK_BRANCH: nightly
   #FIXME: Change this when exporting
   DESTINATION_GITHUB_USERNAME: grillo-delmal 
-  DESTINATION_REPOSITORY_NAME: inochi-creator-nightly
+  DESTINATION_REPOSITORY_NAME: inochi-session-nightly
   FLATPAK_BUILD_DIR: build-dir
   FLATPAK_BUILD_REPO: build-repo
 

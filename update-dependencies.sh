@@ -6,8 +6,8 @@ source ./scripts/semver.sh
 
 CHECKOUT_TARGET=
 NIGHTLY=0
-VERIFY_CREATOR=1
-EXT_CREATOR=
+VERIFY_SESSION=1
+EXT_SESSION=
 
 # Parse options
 for i in "$@"; do
@@ -15,14 +15,14 @@ for i in "$@"; do
         -h|--help)
 cat <<EOL
 Usage: $0 [OPTION]...
-Checks a specific version of inochi-creator, calculates dependencies and stores them 
+Checks a specific version of inochi-session, calculates dependencies and stores them 
 on a file ready to be used by flatpak-builder.
 By default it uses the version defined by the commit hash defined in the
-./com.inochi2d.inochi-creator.yml file
+./com.inochi2d.inochi-session.yml file
 
     --target=<string>       Checkout a specific hash/tag/branch instead of
                             reading the one defined on the yaml file.
-    --ext-creator=<string>  Search creator commit in external file
+    --ext-session=<string>  Search session commit in external file
     --nightly               Will checkout the latest commit from all 
                             dependency repositories.
     --force                 Skip verification.
@@ -34,15 +34,15 @@ EOL
             CHECKOUT_TARGET="${i#*=}"
             shift # past argument=value
             ;;
-        -e=*|--ext-creator=*)
-            EXT_CREATOR="${i#*=}"
+        -e=*|--ext-session=*)
+            EXT_SESSION="${i#*=}"
             shift # past argument=value
             ;;
         -n|--nightly)
             NIGHTLY=1
             ;;
         -f|--force)
-            VERIFY_CREATOR=0
+            VERIFY_SESSION=0
             ;;
         -*|--*)
             echo "Unknown option $i"
@@ -55,15 +55,15 @@ done
 
 echo "### Verification Stage"
 if [ -z ${CHECKOUT_TARGET} ]; then
-    if [ -z ${EXT_CREATOR} ]; then
-        CHECKOUT_TARGET=$(python3 ./scripts/find-creator-hash.py ./com.inochi2d.inochi-creator.yml)
+    if [ -z ${EXT_SESSION} ]; then
+        CHECKOUT_TARGET=$(python3 ./scripts/find-session-hash.py ./com.inochi2d.inochi-session.yml)
     else
-        CHECKOUT_TARGET=$(python3 ./scripts/find-creator-hash.py ${EXT_CREATOR} ext)
+        CHECKOUT_TARGET=$(python3 ./scripts/find-session-hash.py ${EXT_SESSION} ext)
     fi
 fi
 
 # Verify that we are not repeating work 
-if [ "${NIGHTLY}" == "0" ] && [ "${VERIFY_CREATOR}" == "1" ]; then
+if [ "${NIGHTLY}" == "0" ] && [ "${VERIFY_SESSION}" == "1" ]; then
     if [ -f "./.dep_target" ]; then
         LAST_PROC=$(cat ./.dep_target)
         if [ "$CHECKOUT_TARGET" == "$LAST_PROC" ]; then
@@ -82,9 +82,9 @@ find ./dep.build -mindepth 1 -maxdepth 1 -exec rm -rf -- {} +
 
 pushd dep.build
 
-# Download inochi-creator
-git clone https://github.com/Inochi2D/inochi-creator.git
-git -C ./inochi-creator/ checkout $CHECKOUT_TARGET 2>/dev/null
+# Download inochi-session
+git clone https://github.com/Inochi2D/inochi-session.git
+git -C ./inochi-session/ checkout $CHECKOUT_TARGET 2>/dev/null
 
 # Download deps
 mkdir -p ./deps
@@ -106,10 +106,10 @@ git clone https://github.com/dcarp/semver.git
 popd #deps
 
 if [ "${NIGHTLY}" == "0" ]; then
-    # Update repos to their state at inochi-creators commit date
-    CREATOR_DATE=$(git -C ./inochi-creator/ show -s --format=%ci)
+    # Update repos to their state at inochi-sessions commit date
+    SESSION_DATE=$(git -C ./inochi-session/ show -s --format=%ci)
     for d in ./deps/*/ ; do
-        DEP_COMMIT=$(git -C $d log --before="$CREATOR_DATE" -n1 --pretty=format:"%H" | head -n1)
+        DEP_COMMIT=$(git -C $d log --before="$SESSION_DATE" -n1 --pretty=format:"%H" | head -n1)
         git -C $d checkout $DEP_COMMIT 2>/dev/null
     done
 fi
@@ -119,7 +119,7 @@ fi
 # .This perl regular expresion will match strings that contain
 # .`inochi2d`, `~>` and `"`, with anything in between those things
 # .it will output only the things between `~>` and `"`
-REQ_INOCHI2D_TAG=v$(grep -oP 'inochi2d.*~>\K(.*)(?=")' ./inochi-creator/dub.sdl)
+REQ_INOCHI2D_TAG=v$(grep -oP 'inochi2d.*~>\K(.*)(?=")' ./inochi-session/dub.sdl)
 CUR_INOCHI2D_TAG=$(git -C ./deps/inochi2d/ describe --tags \
         `git -C ./deps/inochi2d/ rev-list --tags --max-count=1`)
 if [[ "$CUR_INOCHI2D_TAG" != "$REQ_INOCHI2D_TAG" ]]; then
@@ -132,25 +132,25 @@ git -C ./deps/semver/ checkout "$REQ_SEMVER_TAG" 2>/dev/null
 
 echo "### Build Stage"
 
-# Add the dependencies to the inochi creator's local-packages file
+# Add the dependencies to the inochi session's local-packages file
 # .The version is calculated to semver format using the git tag
 # .the commit hash and the commit distance to the tag.
-mkdir -p ./inochi-creator/.dub/packages
+mkdir -p ./inochi-session/.dub/packages
 for d in ./deps/*/ ; do
     python3 ../scripts/write-local-packages.py \
-        ./inochi-creator/.dub/packages/local-packages.json \
+        ./inochi-session/.dub/packages/local-packages.json \
         ../deps/ \
         $(basename $d) \
         "$(semver $d)"
 done
 
 # Download dependencies and generate the dub.selections.json file in the process
-pushd inochi-creator
+pushd inochi-session
 dub describe  \
     --compiler=ldc2 --build=release --config=linux-full \
     --cache=local \
     >> ../describe.json
-popd #inochi-creator
+popd #inochi-session
 
 popd #dep.build
 
@@ -164,7 +164,7 @@ curl \
 # Generate the dependency file
 python3 ./dep.build/flatpak-dub-generator.py \
     --output=./dep.build/dub-dependencies.json \
-    ./dep.build/inochi-creator/dub.selections.json
+    ./dep.build/inochi-session/dub.selections.json
 
 # Generate the dub-add-local-sources.json using the generated
 # dependency file and adding the correct information to get
