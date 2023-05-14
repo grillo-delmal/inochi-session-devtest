@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=Inochi Session (Nightly)
+Name=Inochi Session (Dev Test)
 Exec=inochi-session
-Icon=com.inochi2d.inochi-session
+Icon=io.github.grillo_delmal.inochi-session
 Type=Application
 Categories=Utility
