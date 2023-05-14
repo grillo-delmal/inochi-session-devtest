@@ -45,4 +45,9 @@ jobs:
           git config --global user.name 'Nightly Updater'
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -am "Automated update"
-          git push origin HEAD:main
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PAT }}
+          branch: ${{ github.ref }}
