@@ -36,8 +36,6 @@ modules:
     sources:
       - dub-add-local-sources.json
       - latest-session.yml
-      - type: dir
-        path: ./files/inochi-session/
 
   - name: Metadata
     buildsystem: simple
