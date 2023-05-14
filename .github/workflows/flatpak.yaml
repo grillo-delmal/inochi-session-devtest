@@ -103,7 +103,7 @@ jobs:
         path: ${{ env.FLATPAK_BUNDLE }}.debug.flatpak
 
   publish-oci:
-#    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: build
 
