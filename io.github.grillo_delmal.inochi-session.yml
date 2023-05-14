@@ -1,4 +1,4 @@
-id: com.inochi2d.inochi-session
+id: io.github.grillo_delmal.inochi-session
 runtime: org.freedesktop.Platform
 runtime-version: '22.08'
 sdk: org.freedesktop.Sdk
@@ -14,8 +14,7 @@ finish-args:
   - --filesystem=host     #This is a dev tool, it should probably have as much access to the host as it can. Also needs it for "Recent Files"
 
 modules:
-
-  - shared-modules/SDL2/SDL2-2.26.1-with-libdecor.json
+  - shared-modules/SDL2/SDL2-with-libdecor.json
 
   # --- Inochi Session ---
   - name: Inochi-Session
@@ -37,25 +36,25 @@ modules:
     sources:
       - dub-add-local-sources.json
       - latest-session.yml
+      - type: dir
+        path: ./files/inochi-session/
 
   - name: Metadata
     buildsystem: simple
     build-commands:
 
-      - install -Dm644 com.inochi2d.inochi-session.metainfo.xml /app/share/metainfo/com.inochi2d.inochi-session.metainfo.xml
-      - install -Dm644 ./session/icon_128.png /app/share/icons/hicolor/128x128/apps/com.inochi2d.inochi-session.png
-      - install -Dm644 ./session/icon_256.png /app/share/icons/hicolor/256x256/apps/com.inochi2d.inochi-session.png
-      - install -Dm644 ./session/icon_512.png /app/share/icons/hicolor/512x512/apps/com.inochi2d.inochi-session.png
-      - install -Dm644 inochi-session.desktop /app/share/applications/com.inochi2d.inochi-session.desktop
+      - install -Dm644 io.github.grillo_delmal.inochi-session.metainfo.xml /app/share/metainfo/io.github.grillo_delmal.inochi-session.metainfo.xml
+      - install -Dm644 ./vpuppet-playing.png /app/share/icons/hicolor/128x128/apps/io.github.grillo_delmal.inochi-session.png
+      - install -Dm644 inochi-session.desktop /app/share/applications/io.github.grillo_delmal.inochi-session.desktop
 
     sources:
       - type: git
-        url: https://github.com/Inochi2D/branding.git
-        commit: 7caad43eb2b6d423275a3d972ac1e7ee36da2850
+        url: https://github.com/grillo-delmal/vpuppet-icons.git
+        commit: 5a0504eed1fb1b1a80415b17d9c860e01bebb191
 
       - type: file
         path: inochi-session.desktop
 
       - type: file
-        path: com.inochi2d.inochi-session.metainfo.xml
+        path: io.github.grillo_delmal.inochi-session.metainfo.xml
 
