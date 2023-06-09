@@ -2,7 +2,7 @@
 <component type="desktop">
   <id>io.github.grillo_delmal.inochi-session</id>
   <name>Inochi Session (Dev Test)</name>
-  <summary>Tool to create and edit Inochi2D puppets.</summary>
+  <summary>Tool for using Inochi2D puppets for streaming.</summary>
   <developer_name>Luna Nielsen</developer_name>
   <launchable type="desktop-id">io.github.grillo_delmal.inochi-session.desktop</launchable>
   <metadata_license>CC0-1.0</metadata_license>
@@ -21,7 +21,6 @@
   </screenshots>
   <releases>
     <release version="devtest">
-      <url>https://github.com/Inochi2D/inochi-session/</url>
       <description>
          <p>This is a development test build of Inochi Session!</p>
          <p>Inochi Session may crash unexpectedly and you will likely encounter bugs.</p>
