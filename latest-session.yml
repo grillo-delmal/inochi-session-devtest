@@ -1,4 +1,4 @@
 type: git
 url: https://github.com/Inochi2D/inochi-session.git
-commit: 3fefa2b7dc038e9d9ee606c8176691747df7667d
+commit: f2bac849334d2b1678a12c3c36bad60cf3cd3fc9
 disable-shallow-clone: true
