@@ -20,7 +20,7 @@
     </screenshot>
   </screenshots>
   <releases>
-    <release version="0.8.3+build.2.gf2bac84.20240220T003125Z" date="2024-02-20">
+    <release version="0.8.3+build.4.g393fc01.20240223T003433Z" date="2024-02-23">
       <description>
          <p>This is a development test build of Inochi Session!</p>
          <p>Inochi Session may crash unexpectedly and you will likely encounter bugs.</p>
