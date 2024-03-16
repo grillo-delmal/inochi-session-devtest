@@ -26,21 +26,7 @@ modules:
         DFLAGS: '-g --d-debug'
     build-commands:
       # Apply lib patches
-      - if [ -d "./patches" ]; then pushd patches; if [ -d "./libs" ]; then pushd libs;
-        if [ ! -z "$(ls -A */ 2> /dev/null)" ];
-        then for d in * ;
-        do   if [ -d "$d" ];
-        then for p in ${d}/*.patch;
-        do   for g in ../../.flatpak-dub/${d}*;
-        do   if [ -d "$g" ];
-        then echo "Patching ${p}"; git -C ${g} apply ../../patches/libs/$p;
-        fi; done; done; fi; done; fi;
-        popd; fi; popd; fi;
-      # Apply inochi session patches
-      - if [ -d "./patches/inochi-session" ];
-        then for p in ./patches/inochi-session/*.patch;
-        do echo "Patching ${p}"; git -C . apply $p;
-        done; fi;
+      - bash ./patches/apply_patches.sh
       - chmod +x ./gentl.sh; ./gentl.sh
       # Build
       - dub add-path .flatpak-dub;
@@ -56,6 +42,7 @@ modules:
       - latest-session.yml
       - type: dir
         path: patches/
+        dest: patches/
 
   - name: Metadata
     buildsystem: simple
