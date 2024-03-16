@@ -33,13 +33,13 @@ modules:
         then for p in ${d}/*.patch;
         do   for g in ../../.flatpak-dub/${d}*;
         do   if [ -d "$g" ];
-        then git -C ${g} apply ../../patches/libs/$p;
+        then echo "Patching ${p}"; git -C ${g} apply ../../patches/libs/$p;
         fi; done; done; fi; done; fi;
         popd; fi; popd; fi;
       # Apply inochi session patches
       - if [ -d "./patches/inochi-session" ];
         then for p in ./patches/inochi-session/*.patch;
-        do echo "git -C . apply $p";
+        do echo "Patching ${p}"; git -C . apply $p;
         done; fi;
       - chmod +x ./gentl.sh; ./gentl.sh
       # Build
