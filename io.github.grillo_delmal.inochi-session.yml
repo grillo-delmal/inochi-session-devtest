@@ -25,7 +25,24 @@ modules:
       env:
         DFLAGS: '-g --d-debug'
     build-commands:
+      # Apply lib patches
+      - if [ -d "./patches" ]; then pushd patches; if [ -d "./libs" ]; then pushd libs;
+        if [ ! -z "$(ls -A */ 2> /dev/null)" ];
+        then for d in * ;
+        do   if [ -d "$d" ];
+        then for p in ${d}/*.patch;
+        do   for g in ../../.flatpak-dub/${d}*;
+        do   if [ -d "$g" ];
+        then git -C ${g} apply ../../patches/libs/$p;
+        fi; done; done; fi; done; fi;
+        popd; fi; popd; fi;
+      # Apply inochi session patches
+      - if [ -d "./patches/inochi-session" ];
+        then for p in ./patches/inochi-session/*.patch;
+        do echo "git -C . apply $p";
+        done; fi;
       - chmod +x ./gentl.sh; ./gentl.sh
+      # Build
       - dub add-path .flatpak-dub;
         dub build --skip-registry=all --config=meta;
         dub build --skip-registry=all --build=release --config=barebones --debug=InExperimental --override-config=facetrack-d/web-adaptors
@@ -37,6 +54,8 @@ modules:
     sources:
       - dub-add-local-sources.json
       - latest-session.yml
+      - type: dir
+        path: patches/
 
   - name: Metadata
     buildsystem: simple
