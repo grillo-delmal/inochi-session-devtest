@@ -90,17 +90,18 @@ git -C ./inochi-session/ checkout $CHECKOUT_TARGET 2>/dev/null
 mkdir -p ./deps
 pushd deps
 git clone https://github.com/Inochi2D/inochi2d.git
+git clone https://github.com/Inochi2D/bindbc-spout2.git
+git clone https://github.com/Inochi2D/dportals.git
 git clone https://github.com/Inochi2D/facetrack-d.git
-git clone https://github.com/Inochi2D/vmc-d.git
-git clone https://github.com/Inochi2D/inmath.git
-git clone https://github.com/Inochi2D/psd-d.git
 git clone https://github.com/Inochi2D/fghj.git
+git clone https://github.com/KitsunebiGames/i18n.git i18n-d
 git clone https://github.com/Inochi2D/i2d-imgui.git
 git clone https://github.com/Inochi2D/i2d-opengl.git
-git clone https://github.com/KitsunebiGames/i18n.git i18n-d
-git clone https://github.com/Inochi2D/dportals.git
+git clone https://github.com/Inochi2D/inmath.git
+git clone https://github.com/Inochi2D/inui.git
+git clone https://github.com/Inochi2D/vmc-d.git
 
-# Fixme Use v0_8 branch until v9 is usable
+# Fixme: Use v0_8 branch until v9 is usable
 git -C ./inochi2d checkout v0_8
 
 # Download gitver and semver
@@ -109,7 +110,7 @@ git clone https://github.com/dcarp/semver.git
 popd #deps
 
 if [ "${NIGHTLY}" == "0" ]; then
-    # Update repos to their state at inochi-sessions commit date
+    # Update repos to their state at inochi-session's commit date
     SESSION_DATE=$(git -C ./inochi-session/ show -s --format=%ci)
     for d in ./deps/*/ ; do
         DEP_COMMIT=$(git -C $d log --before="$SESSION_DATE" -n1 --pretty=format:"%H" | head -n1)
