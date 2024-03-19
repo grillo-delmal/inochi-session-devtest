@@ -16,14 +16,14 @@ sources = []
 
 if "modules" in data:
     for module in data["modules"]:
-        if "name" in module and module["name"] == "Inochi-Creator":
+        if "name" in module and module["name"] == "Inochi-Session":
             if "sources" in module:
                 sources = module["sources"]
                 break
 
 for source in sources:
     if "type" in source and source["type"] == "git":
-        if "url" in source and "inochi-creator" in source["url"]:
+        if "url" in source and "inochi-session" in source["url"]:
             if "commit" in source:
                 print(source["commit"])
                 break
