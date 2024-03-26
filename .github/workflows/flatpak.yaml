@@ -70,7 +70,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: inochi-session-source
-        path: .flatpak-builder/build/Inochi-Session-1/*
+        path: /__w/inochi-session-nightly/inochi-session-nightly/.flatpak-builder/build/Inochi-Session-1/*
         retention-days: 1
 
   publish-bundle:
