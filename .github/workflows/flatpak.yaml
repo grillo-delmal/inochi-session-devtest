@@ -66,6 +66,13 @@ jobs:
           ${{ env.FLATPAK_BUILD_REPO }}
           !${{ env.FLATPAK_BUILD_REPO }}/.lock
 
+    - name: Upload source
+      uses: actions/upload-artifact@v3
+      with:
+        name: inochi-session-source
+        path: .flatpak-builder/build/Inochi-Session-1/*
+        retention-days: 1
+
   publish-bundle:
     runs-on: ubuntu-latest
     needs: build
@@ -96,11 +103,31 @@ jobs:
         name: ${{ env.FLATPAK_BUNDLE }}
         path: ${{ env.FLATPAK_BUNDLE }}.flatpak
 
-    - name: Upload flatpak bundle
+    - name: Upload flatpak bundle for debug
       uses: actions/upload-artifact@v1
       with:
         name: ${{ env.FLATPAK_BUNDLE }}.debug
         path: ${{ env.FLATPAK_BUNDLE }}.debug.flatpak
+
+    - name: Release to nightly tag
+      if: github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v1
+      with:
+        name: 'Unofficial Nightly Build'
+        tag_name: dev-test
+        files: |
+          ${{ env.FLATPAK_BUNDLE }}.flatpak
+          ${{ env.FLATPAK_BUNDLE }}.debug.flatpak
+
+    - name: Release to other tag
+      if: github.ref != 'refs/heads/main'
+      uses: softprops/action-gh-release@v1
+      with:
+        name: 'Test Build'
+        tag_name: dispatch
+        files: |
+          ${{ env.FLATPAK_BUNDLE }}.flatpak
+          ${{ env.FLATPAK_BUNDLE }}.debug.flatpak
 
   publish-oci:
     if: github.ref == 'refs/heads/main'
@@ -198,3 +225,67 @@ jobs:
         user-email: github-actions[bot]@users.noreply.github.com
         commit-message: Update index
         target-branch: main
+
+  windows-zip:
+    runs-on: windows-latest
+    needs: build
+
+    steps:
+    - uses: dlang-community/setup-dlang@4c99aa991ce7d19dd3064de0a4f2f6b2f152e2d7
+      with:
+        compiler: ldc-latest
+        
+    - name: Download source
+      continue-on-error: true
+      uses: actions/download-artifact@v3
+      with:
+        name: inochi-session-source
+        path: './'
+      
+    - name: "Set dependencies"
+      run: |
+        dub add-path .flatpak-dub
+
+    - name: 'Build Inochi Session'
+      run: |
+        function Invoke-VSDevEnvironment {
+        $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+              $installationPath = & $vswhere -prerelease -legacy -latest -property installationPath
+              $Command = Join-Path $installationPath "Common7\Tools\vsdevcmd.bat"
+            & "${env:COMSPEC}" /s /c "`"$Command`" -no_logo && set" | Foreach-Object {
+                  if ($_ -match '^([^=]+)=(.*)') {
+                      [System.Environment]::SetEnvironmentVariable($matches[1], $matches[2])
+                  }
+              }
+          }
+          Invoke-VSDevEnvironment
+          
+          # Build metadata (like version information and icons)
+          dub build --skip-registry=all --config=meta
+
+          # Build the project, with its main file included, without unittests
+          dub build --skip-registry=all --build=release --config=barebones --debug=InExperimental --override-config=facetrack-d/web-adaptors
+
+    - name: Archive Zip
+      uses: thedoctor0/zip-release@main
+      with:
+        type: 'zip'
+        filename: 'inochi-session-win32-x86_64.zip'
+        directory: 'out/'
+        path: '*'
+
+    - name: Release to nightly tag
+      if: github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v1
+      with:
+        name: 'Unofficial Nightly Build'
+        tag_name: dev-test
+        files: 'out/inochi-session-win32-x86_64.zip'
+
+    - name: Release to other tag
+      if: github.ref != 'refs/heads/main'
+      uses: softprops/action-gh-release@v1
+      with:
+        name: 'Test Build'
+        tag_name: dispatch
+        files: 'out/inochi-session-win32-x86_64.zip'
