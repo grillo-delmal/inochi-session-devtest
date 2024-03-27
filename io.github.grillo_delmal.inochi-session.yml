@@ -17,6 +17,34 @@ finish-args:
 modules:
   - shared-modules/SDL2/SDL2-with-libdecor.json
 
+  - name: Inochi-Session-Source
+    buildsystem: simple
+    build-commands:
+      # Apply lib patches
+      - bash ./patches/apply_patches.sh
+      # Build translations
+      - mkdir otl/ ;
+        if [ -n `$(find tl/ -name "*.po" 2>/dev/null)` ] ;
+        then
+            echo "No translations, skipping...";
+        else
+            sudo chmod +x gentl.sh;
+            ./gentl.sh;
+            cp out/* otl/;
+        fi
+      - jq 'map(.path = (["D:/a/inochi-session-nightly/inochi-session-nightly"] + (.path | split("/"))[-2:] | join("/")) )' <<<$(<.dub/packages/local-packages.json) > .dub/packages/local-packages.win.json
+      - jq 'map(.path = (["/Users/runner/work/inochi-session-nightly/inochi-session-nightly"] + (.path | split("/"))[-2:] | join("/")) )' <<<$(<.dub/packages/local-packages.json) > .dub/packages/local-packages.mac.json
+      # Clean up
+      - rm -rf $(find .flatpak-dub/ -maxdepth 1 -iname "i2d-imgui*")/.git/modules
+      - rm -rf $(find .flatpak-dub/ -maxdepth 1 -iname "i2d-imgui*")/deps/SDL/test
+
+    sources:
+      - dub-add-local-sources.json
+      - latest-session.yml
+      - type: dir
+        path: patches/
+        dest: patches/
+
   # --- Inochi Session ---
   - name: Inochi-Session
     buildsystem: simple
@@ -27,15 +55,28 @@ modules:
     build-commands:
       # Apply lib patches
       - bash ./patches/apply_patches.sh
-      - chmod +x ./gentl.sh; ./gentl.sh
+      # Build translations
+      - mkdir otl/ ;
+        if [ -n `$(find tl/ -name "*.po" 2>/dev/null)` ] ;
+        then
+            echo "No translations, skipping...";
+        else
+            sudo chmod +x gentl.sh;
+            ./gentl.sh;
+            cp out/* otl/;
+        fi
+      # Clean up
+      - rm -rf $(find .flatpak-dub/ -maxdepth 1 -iname "i2d-imgui*")/.git/modules
+      - rm -rf $(find .flatpak-dub/ -maxdepth 1 -iname "i2d-imgui*")/deps/SDL/test
       # Build
       - dub add-path .flatpak-dub;
         dub build --skip-registry=all --config=meta;
         dub build --skip-registry=all --build=release --config=barebones --debug=InExperimental --override-config=facetrack-d/web-adaptors
       - install -m 755 ./out/inochi-session /app/bin/inochi-session
       - install -m 755 ./out/cimgui.so /app/bin/cimgui.so
+      - dub clean --all-packages 
       # Uncomment when session translations are actually a thing. 
-      #- install -Dm644 ./out/*.mo /app/bin
+      #- install -Dm644 ./otl/*.mo /app/bin
 
     sources:
       - dub-add-local-sources.json
