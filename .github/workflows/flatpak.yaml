@@ -1,5 +1,5 @@
 # Based on https://raw.githubusercontent.com/gasinvein/proton-flatpak/7962b87cf0d079998ea861e1a358fa93d63af7e5/.github/workflows/flatpak.yml
-name: Flatpak
+name: Nightly Build
 
 on:
   push:
@@ -72,6 +72,67 @@ jobs:
         name: inochi-session-source
         path: .flatpak-builder/build/Inochi-Session-Source-1/*
         retention-days: 1
+
+  publish-source-nightly:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Download source files
+      uses: actions/download-artifact@v4
+      with:
+        name: inochi-session-source
+        path: 'out/'
+
+    - name: Archive Zip
+      uses: thedoctor0/zip-release@main
+      with:
+        type: 'zip'
+        filename: 'inochi-session-source.zip'
+        directory: 'out/'
+        path: '.'
+
+    - name: Release to nightly tag
+      uses: softprops/action-gh-release@v2
+      with:
+        name: 'Unofficial Nightly Build'
+        tag_name: dev-test
+        files: 'out/inochi-session-source.zip'
+
+
+  publish-source-test:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref != 'refs/heads/main'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Download source files
+      uses: actions/download-artifact@v4
+      with:
+        name: inochi-session-source
+        path: 'out/'
+
+    - name: Archive Zip
+      uses: thedoctor0/zip-release@main
+      with:
+        type: 'zip'
+        filename: 'inochi-session-source.zip'
+        directory: 'out/'
+        path: '.'
+
+    - name: Release to other tag
+      uses: softprops/action-gh-release@v2
+      with:
+        name: 'Test Build'
+        tag_name: dispatch
+        files: 'out/inochi-session-source.zip'
 
   publish-bundle:
     runs-on: ubuntu-latest
@@ -273,7 +334,7 @@ jobs:
     needs: build
 
     steps:
-    - uses: dlang-community/setup-dlang@4c99aa991ce7d19dd3064de0a4f2f6b2f152e2d7
+    - uses: dlang-community/setup-dlang@v1
       with:
         compiler: ldc-latest
         
@@ -284,6 +345,13 @@ jobs:
         name: inochi-session-source
         path: '.'
       
+    - name: 'Get dependencies'
+      run: |
+        rm .dub/packages/local-packages.json
+        mv .dub/packages/local-packages.win.json .dub/packages/local-packages.json
+
+        dub add-path .flatpak-dub
+
     - name: 'Build Inochi Session'
       run: |
         function Invoke-VSDevEnvironment {
@@ -298,17 +366,12 @@ jobs:
           }
           Invoke-VSDevEnvironment
 
-          rm .dub/packages/local-packages.json
-          mv .dub/packages/local-packages.win.json .dub/packages/local-packages.json
-
-          # Set dependencies
-          dub add-path .flatpak-dub
-
           # Build metadata (like version information and icons)
           dub build --skip-registry=all --config=meta
 
           # Build the project, with its main file included, without unittests
-          dub build --skip-registry=all --build=release --config=win32-nightly --debug=InExperimental
+          $Env:DFLAGS = '-g'
+          dub build --skip-registry=all --build=debug --config=win32-nightly --debug=InExperimental
 
     - name: Upload Zip
       uses: actions/upload-artifact@v4
@@ -390,7 +453,7 @@ jobs:
         name: inochi-session-source
         path: '.'
       
-    - uses: LunaTheFoxgirl/setup-dlang@v1
+    - uses: dlang-community/setup-dlang@v1
       with:
         compiler: ldc-latest
   
