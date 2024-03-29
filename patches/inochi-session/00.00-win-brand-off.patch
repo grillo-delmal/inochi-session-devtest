@@ -1,0 +1,26 @@
+diff --git a/build-aux/windows/inochi-session.rc b/build-aux/windows/inochi-session.rc
+index 2b5f621..a7b8509 100644
+--- a/build-aux/windows/inochi-session.rc
++++ b/build-aux/windows/inochi-session.rc
+@@ -1,8 +1,6 @@
+ #include <windows.h>
+ #include "version.h"
+ 
+-IDI_ICON1          ICON           "icon.ico"
+-
+ VS_VERSION_INFO VERSIONINFO
+ FILEVERSION     VER_FILEVERSION
+ PRODUCTVERSION  VER_PRODUCTVERSION
+diff --git a/dub.sdl b/dub.sdl
+index ffa1d9d..0afec2d 100644
+--- a/dub.sdl
++++ b/dub.sdl
+@@ -104,7 +104,7 @@ configuration "osx-nightly" {
+ configuration "win32-nightly" {
+ 	platforms "windows"
+ 	targetType "executable"
+-	versions "InBranding" "InNightly"
++	versions "InNightly"
+ 	
+ 	dependency "bindbc-spout2" version="~>0.1.1"
+ 
