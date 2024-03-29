@@ -36,7 +36,7 @@
         "url": "https://github.com/Inochi2D/bindbc-spout2.git",
         "commit": "3d6e26f73a754946a0000d4c096c18a2bb6320f2",
         "dest": ".flatpak-dub/bindbc-spout2-0.1.1",
-        "disable-shallow-clone": true
+        "disable-shallow-clone": false
     },
     {
         "type": "archive",
@@ -74,14 +74,14 @@
         "url": "https://github.com/Inochi2D/facetrack-d.git",
         "commit": "f9539205d831bd2c135b989e9f9ea48629af9256",
         "dest": ".flatpak-dub/facetrack-d-0.7.8",
-        "disable-shallow-clone": true
+        "disable-shallow-clone": false
     },
     {
         "type": "git",
         "url": "https://github.com/Inochi2D/fghj.git",
         "commit": "cb73df65e289c820e801c62401c8048c03c806bf",
         "dest": ".flatpak-dub/fghj-1.0.2",
-        "disable-shallow-clone": true,
+        "disable-shallow-clone": false,
         "disable-submodules": true
     },
     {
@@ -96,7 +96,7 @@
         "url": "https://github.com/Inochi2D/i2d-imgui.git",
         "commit": "e34f8ba04c0085be7ee83a8df200cf2ffb30bfd3",
         "dest": ".flatpak-dub/i2d-imgui-0.8.0+build.4.ge34f8ba",
-        "disable-shallow-clone": true
+        "disable-shallow-clone": false
     },
     {
         "type": "git",
@@ -116,21 +116,21 @@
         "url": "https://github.com/Inochi2D/inmath.git",
         "commit": "6ee33a0e160bcf0c0286a16e232feeeae2306548",
         "dest": ".flatpak-dub/inmath-1.0.6",
-        "disable-shallow-clone": true
+        "disable-shallow-clone": false
     },
     {
         "type": "git",
         "url": "https://github.com/Inochi2D/inochi2d.git",
         "commit": "702cc4d918b0bcc52a0825807e422b62c64e8291",
         "dest": ".flatpak-dub/inochi2d-0.8.3+build.4.g702cc4d",
-        "disable-shallow-clone": true
+        "disable-shallow-clone": false
     },
     {
         "type": "git",
         "url": "https://github.com/Inochi2D/inui.git",
         "commit": "039d4247c58bc0afe48595435d0814d3019da5ef",
         "dest": ".flatpak-dub/inui-1.2.1+build.2.g039d424",
-        "disable-shallow-clone": true
+        "disable-shallow-clone": false
     },
     {
         "type": "archive",
