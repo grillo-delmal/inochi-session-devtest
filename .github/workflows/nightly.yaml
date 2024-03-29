@@ -367,7 +367,102 @@ jobs:
         commit-message: Update index
         target-branch: main
 
-  windows-zip:
+  build-linux-zip:
+    runs-on: ubuntu-20.04
+    needs: build-base
+
+    steps:
+    - name: Download source
+      continue-on-error: true
+      uses: actions/download-artifact@v4
+      with:
+        name: inochi-session-source
+        path: '.'
+      
+    - uses: dlang-community/setup-dlang@v1
+      with:
+        compiler: ldc-latest
+  
+    - name: 'Get build dependencies'
+      run: |
+        sudo apt install libsdl2-dev libfreetype6-dev
+    
+    - name: 'Build Inochi Session'
+      run: |
+        export DFLAGS='-g --d-debug'
+
+        # Build metadata (like version information and icons)
+        dub build --config=meta
+
+        # Build the project, with its main file included, without unittests
+        dub build --skip-registry=all --build=debug --config=barebones
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: inochi-session-linux-x86_64
+        path: 'out/'
+
+  publish-linux-zip-nightly:
+    runs-on: ubuntu-latest
+    needs: build-linux-zip
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Download linux files
+      uses: actions/download-artifact@v4
+      with:
+        name: inochi-session-linux-x86_64
+        path: 'out/'
+
+    - name: Archive Zip
+      uses: thedoctor0/zip-release@main
+      with:
+        type: 'zip'
+        filename: 'inochi-session-linux-x86_64.zip'
+        directory: 'out/'
+        path: '*'
+
+    - name: Release to nightly tag
+      uses: softprops/action-gh-release@v2
+      with:
+        name: 'Unofficial Nightly Build'
+        tag_name: nightly
+        files: 'out/inochi-session-linux-x86_64.zip'
+
+  publish-linux-zip-test:
+    runs-on: ubuntu-latest
+    needs: build-linux-zip
+    if: github.ref != 'refs/heads/main'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Download linux files
+      uses: actions/download-artifact@v4
+      with:
+        name: inochi-session-linux-x86_64
+        path: 'out/'
+
+    - name: Archive Zip
+      uses: thedoctor0/zip-release@main
+      with:
+        type: 'zip'
+        filename: 'inochi-session-linux-x86_64.zip'
+        directory: 'out/'
+        path: '*'
+
+    - name: Release to other tag
+      uses: softprops/action-gh-release@v2
+      with:
+        name: 'Test Build'
+        tag_name: testing
+        files: 'out/inochi-session-linux-x86_64.zip'
+
   build-windows-zip:
     runs-on: windows-latest
     needs: build-base
