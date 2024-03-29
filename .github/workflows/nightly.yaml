@@ -491,7 +491,7 @@ jobs:
         name: inochi-session-source
         path: '.'
       
-    - uses: dlang-community/setup-dlang@v1
+    - uses: LunaTheFoxgirl/setup-dlang@v1
       with:
         compiler: ldc-latest
   
@@ -499,12 +499,14 @@ jobs:
       continue-on-error: true
       run: |
         export HOMEBREW_NO_INSTALL_CLEANUP=1
+        brew update
         brew install create-dmg gettext
 
     - name: "Remove conflicting brew packages"
+      continue-on-error: true
       run: |
         # Remove conflicting brew items
-        deps=(aom cairo composer curl fontconfig freetype gd ghostscript httpd imagemagick jpeg-xl libavif libheif libxft mongodb-community@5.0 mongosh openjpeg php r sox webp libpng brotli)
+        deps=(aom cairo composer curl fontconfig freetype gd ghostscript httpd imagemagick jpeg-xl libavif libheif libxft mongodb-community@5.0 mongosh openjpeg php r sox webp libpng brotli node@16)
         for dep in "${deps[@]}"; do
           brew remove --ignore-dependencies $dep
         done
