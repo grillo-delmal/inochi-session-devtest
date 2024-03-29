@@ -383,8 +383,13 @@ jobs:
       with:
         compiler: ldc-latest
   
-    - name: 'Get build dependencies'
+    - name: 'Get dependencies'
       run: |
+        rm .dub/packages/local-packages.json
+        mv .dub/packages/local-packages.linux.json .dub/packages/local-packages.json
+
+        dub add-path .flatpak-dub
+
         sudo apt install libsdl2-dev libfreetype6-dev
     
     - name: 'Build Inochi Session'
