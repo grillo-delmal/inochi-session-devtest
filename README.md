@@ -1,8 +1,8 @@
 # Inochi Session Nightly Builds
 
-This is not an official build of inochi-session, I use this project artifacts as reference for the official build system.
-Don't expect any warranty or support to use them.
-For normal supported usage, please get a supported version from the [official website](https://inochi2d.com/#download).
+This is not an official build of inochi-session. I use this system to check on the latest updates and to test new patches.
+Don't expect any warranty or support if you use the generated builds from this repository.
+For normal supported usage, please get a supported official version from the [inochi2d website](https://inochi2d.com/#download).
 
 ## Installation
 
