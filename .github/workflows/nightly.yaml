@@ -122,7 +122,6 @@ jobs:
         tag_name: nightly
         files: 'out/inochi-session-source.zip'
 
-
   publish-source-test:
     runs-on: ubuntu-latest
     needs: build-base
