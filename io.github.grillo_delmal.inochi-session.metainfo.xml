@@ -35,9 +35,9 @@
   <categories>
     <category>Graphics</category>
   </categories>
-  <requires>
+  <recommends>
     <control>pointing</control>
     <control>keyboard</control>
-  </requires>
+  </recommends>
   <content_rating type="oars-1.1"/>
 </component>
