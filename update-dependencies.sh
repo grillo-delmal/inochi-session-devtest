@@ -102,7 +102,7 @@ git clone https://github.com/Inochi2D/inui.git
 git clone https://github.com/Inochi2D/vmc-d.git
 
 # Fixme: Use v0_8 branch until v9 is usable
-git -C ./inochi2d checkout 
+git -C ./inochi2d checkout v0_8
 # Lock inmath to v1.0.6 for now ;9
 git -C ./inmath checkout v1.0.6
 
