@@ -1,0 +1,13 @@
+diff --git a/source/session/windows/main.d b/source/session/windows/main.d
+index e68abec..97e4e1c 100644
+--- a/source/session/windows/main.d
++++ b/source/session/windows/main.d
+@@ -172,7 +172,7 @@ protected:
+                     }
+                     if (uiImMenuItem(__("About"))) {
+                         uiImDialog(__("Inochi Session"),
+-                        "Inochi Session %s\n(Inochi2D %s)\n\nMade with <3\nby Luna the Foxgirl and Inochi2D Contributors.".format(INS_VERSION, IN_VERSION), DialogLevel.Info);
++                        "Inochi Session %s\n(Inochi2D %s)\n\nMade with <3\nby Luna the Foxgirl and Inochi2D Contributors.\n\nNightly version distributed by Grillo del Mal... use with caution.".format(INS_VERSION, IN_VERSION), DialogLevel.Info);
+                     }
+                     
+                     uiImEndMenu();
