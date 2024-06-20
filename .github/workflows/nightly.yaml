@@ -633,15 +633,15 @@ jobs:
 
         # Build metadata (like version information and icons)
         dub build --config=meta
-        
+
         # First build ARM64 version...
         echo "Building arm64 binary..."
-        dub build --config=osx-nightly --arch=arm64-apple-macos
+        dub build --skip-registry=all --build=release --config=osx-nightly --arch=arm64-apple-macos --debug=InExperimental
         mv "out/Inochi Session.app/Contents/MacOS/inochi-session" "out/Inochi Session.app/Contents/MacOS/inochi-session-arm64"
 
         # Then the X86_64 version...
         echo "Building x86_64 binary..."
-        dub build --config=osx-nightly --arch=x86_64-apple-macos
+        dub build --skip-registry=all --build=release --config=osx-nightly --arch=x86_64-apple-macos --debug=InExperimental
         mv "out/Inochi Session.app/Contents/MacOS/inochi-session" "out/Inochi Session.app/Contents/MacOS/inochi-session-x86_64"
 
         # Glue them together with lipo
@@ -655,7 +655,7 @@ jobs:
         # Cleanup and bundle
         echo "Cleaning up..."
         rm "out/Inochi Session.app/Contents/MacOS/inochi-session-x86_64" "out/Inochi Session.app/Contents/MacOS/inochi-session-arm64"
-        ./build-aux/osx/osxbundle.sh
+        sh ./build-aux/osx/osxbundle.sh
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
