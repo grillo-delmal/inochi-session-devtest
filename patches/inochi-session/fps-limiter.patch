@@ -1,0 +1,64 @@
+diff --git a/source/session/windows/main.d b/source/session/windows/main.d
+index e68abec..7b58bb8 100644
+--- a/source/session/windows/main.d
++++ b/source/session/windows/main.d
+@@ -21,6 +21,9 @@ import ft;
+ import i18n;
+ import inui.utils.link;
+ import std.format;
++import std.algorithm;
++import std.conv;
++import std.array;
+ import session.ver;
+ import bindbc.opengl;
+ 
+@@ -41,10 +44,37 @@ class InochiSessionWindow : InApplicationWindow {
+ private:
+     Adaptor adaptor;
+     version (InBranding) Texture logo;
++    uint uilessFPS = 0;
++
++    void processOpt(string opt, string val="") {
++        if(opt.startsWith("--fps=")) {
++            uilessFPS = to!uint(opt.split("=")[1]);
++        }
++        else if(opt == "-f") {
++            uilessFPS = to!uint(val);
++        }
++    }
+ 
+     void loadModels(string[] args) {
++        bool nextOpt = false;
++        string opt = "";
+         foreach(arg; args) {
+             import std.file : exists;
++            if(nextOpt){
++                processOpt(opt, arg);
++                nextOpt = false;
++                continue;
++            }
++            else if(arg.startsWith("--")){
++                processOpt(arg);
++                continue;
++            }
++            else if(arg.startsWith("-")){
++                opt = arg;
++                nextOpt = true;
++                continue;
++            }
++
+             if (!exists(arg)) continue;
+             try {
+                 insSceneAddPuppet(arg, inLoadPuppet(arg));
+@@ -66,7 +96,10 @@ protected:
+     override
+     void onUpdate() {
+         if (!inInputIsInUI()) {
+-            if (inInputMouseDoubleClicked(MouseButton.Left)) this.showUI = !showUI;
++            if (inInputMouseDoubleClicked(MouseButton.Left)){
++                this.showUI = !showUI;
++                inSetFPSCap(this.showUI ? 0 : uilessFPS);
++            }
+             insInteractWithScene();
+ 
+             if (getDraggedFiles().length > 0) {

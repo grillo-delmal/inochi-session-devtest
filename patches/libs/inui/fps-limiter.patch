@@ -1,0 +1,81 @@
+diff --git a/source/inui/core/package.d b/source/inui/core/package.d
+index 071b1c6..0cec7cc 100644
+--- a/source/inui/core/package.d
++++ b/source/inui/core/package.d
+@@ -16,10 +16,26 @@ public import inui.core.utils;
+ import inmath;
+ 
+ private {
++    ulong SCREEN_TICKS_PER_FRAME = 0;
++
++    ulong currTicks;
++    ulong lastTicks;
++
+     double lastTime;
+     double currTime;
+ }
+ 
++void inSetFPSCap(uint fps){
++    if(fps > 1000){
++        SCREEN_TICKS_PER_FRAME = 1;
++    } else if(fps > 0){
++        SCREEN_TICKS_PER_FRAME = 1000 / fps;
++    }
++    else {
++        SCREEN_TICKS_PER_FRAME = 0;
++    }
++}
++
+ void inInitUI() {
+     
+     // Load and init SDL2
+@@ -37,9 +53,11 @@ void inInitUI() {
+     Updates time, called internally by inui
+ */
+ void inUpdateTime() {
++    lastTicks = currTicks;
++    if (SDL_GetTicks64) currTicks = SDL_GetTicks64();
++    else currTicks = cast(ulong)SDL_GetTicks();
+     lastTime = currTime;
+-    if (SDL_GetTicks64) currTime = cast(double)SDL_GetTicks64()*0.001;
+-    else currTime = cast(double)SDL_GetTicks()*0.001;
++    currTime = cast(double)currTicks*0.001;
+ }
+ 
+ /**
+@@ -54,4 +72,20 @@ double inGetTime() {
+ */
+ double inGetDeltaTime() {
+     return abs(lastTime-currTime);
++}
++
++void inWaitNextFrame(){
++    if(SCREEN_TICKS_PER_FRAME > 0) {
++        ulong frameTicks;
++        if (SDL_GetTicks64) frameTicks = SDL_GetTicks64();
++        else frameTicks = cast(ulong)SDL_GetTicks();
++
++        frameTicks -= currTicks;
++
++        if( frameTicks < SCREEN_TICKS_PER_FRAME )
++        {
++            //Wait remaining time
++            SDL_Delay(cast(uint)(SCREEN_TICKS_PER_FRAME - frameTicks));
++        }
++    }
+ }
+\ No newline at end of file
+diff --git a/source/inui/core/window/appwin.d b/source/inui/core/window/appwin.d
+index 11adc27..b5349e3 100644
+--- a/source/inui/core/window/appwin.d
++++ b/source/inui/core/window/appwin.d
+@@ -377,6 +377,9 @@ public:
+ 
+         // Clean up dialog windows
+         uiImCleanupDialogs();
++
++        // Wait next frame
++        inWaitNextFrame();
+     }
+ 
+     string getWindowHandle() {
