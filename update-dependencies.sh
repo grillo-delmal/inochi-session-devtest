@@ -101,7 +101,7 @@ git clone https://github.com/Inochi2D/inmath.git
 git clone https://github.com/Inochi2D/inui.git
 git clone https://github.com/Inochi2D/vmc-d.git
 
-# Fixme: Use v0_8 branch until v9 is usable
+# Fixme Use v0_8 branch until v9 is usable
 git -C ./inochi2d checkout v0_8
 # Lock inmath to v1.0.6 for now ;9
 git -C ./inmath checkout v1.0.6
@@ -112,7 +112,7 @@ git clone https://github.com/dcarp/semver.git
 popd #deps
 
 if [ "${NIGHTLY}" == "0" ]; then
-    # Update repos to their state at inochi-session's commit date
+    # Update repos to their state at inochi-sessions commit date
     SESSION_DATE=$(git -C ./inochi-session/ show -s --format=%ci)
     for d in ./deps/*/ ; do
         DEP_COMMIT=$(git -C $d log --before="$SESSION_DATE" -n1 --pretty=format:"%H" | head -n1)
