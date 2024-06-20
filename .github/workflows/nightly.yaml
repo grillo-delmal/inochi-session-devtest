@@ -579,7 +579,7 @@ jobs:
         files: 'out/inochi-session-win32-x86_64.zip'
 
   build-macos-dmg:
-    runs-on: macos-12
+    runs-on: macos-14
     needs: build-base
 
     steps:
@@ -598,6 +598,7 @@ jobs:
       continue-on-error: true
       run: |
         export HOMEBREW_NO_INSTALL_CLEANUP=1
+        export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=1
         brew update
         brew install create-dmg gettext
 
@@ -605,7 +606,7 @@ jobs:
       continue-on-error: true
       run: |
         # Remove conflicting brew items
-        brew remove --ignore-dependencies aom cairo composer curl fontconfig freetype gd ghostscript httpd imagemagick jpeg-xl libavif libheif libxft mongodb-community@5.0 mongosh node@16 openjpeg php r sox webp libpng brotli
+        brew remove --ignore-dependencies libpng brotli harfbuzz
 
     - name: "Remove final conflicting files"
       continue-on-error: true
@@ -655,7 +656,7 @@ jobs:
         # Cleanup and bundle
         echo "Cleaning up..."
         rm "out/Inochi Session.app/Contents/MacOS/inochi-session-x86_64" "out/Inochi Session.app/Contents/MacOS/inochi-session-arm64"
-        sh ./build-aux/osx/osxbundle.sh
+        ./build-aux/osx/osxbundle.sh
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
