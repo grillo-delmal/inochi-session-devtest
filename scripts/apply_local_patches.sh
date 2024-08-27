@@ -11,7 +11,7 @@ if [ -d "./patches" ]; then
             for d in * ; do
                 if [ -d "$d" ]; then
                     for p in ${d}/*.patch; do 
-                        for g in ../../$1/${d}/*/${d}/; do
+                        for g in ../../$1/${d}/; do
                             if [ -d "$g" ]; then
                                 echo "Patching ${p} in ${g}"
                                 cat $p | git -C ${g} apply
@@ -26,7 +26,7 @@ if [ -d "./patches" ]; then
     popd
 fi
 
-# Apply inochi session patches
+# Apply inochi-session patches
 if [ -d "./patches/inochi-session" ]; then
     for p in ./patches/inochi-session/*.patch; do
         echo "Patching ${p}"
