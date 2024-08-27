@@ -29,7 +29,7 @@ jobs:
 
       - name: Install deps
         run: |
-          dnf -y install dub ldc python3-pyyaml
+          dnf -y install dub ldc python3-pyyaml jq
 
       - name: Update dependencies
         run: |
@@ -38,6 +38,7 @@ jobs:
       - name: Commit changes
         id: is-updated 
         run: |
+          git add .
           git status -s -uno
           [ -z "$(git status -s -uno)" ] || echo "updated=true" >> $GITHUB_OUTPUT
 
