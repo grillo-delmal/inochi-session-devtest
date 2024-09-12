@@ -232,7 +232,7 @@ jobs:
     - name: Release to nightly tag
       uses: softprops/action-gh-release@v2
       with:
-        name: 'Unofficial Nightly Build'
+        name: 'Unofficial DevTest Build'
         tag_name: nightly
         files: |
           out/${{ env.FLATPAK_BUNDLE }}.flatpak
@@ -381,8 +381,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        repository: ${{ github.actor }}/inochi-session-nightly-rpm
-        path: 'inochi-session-nightly'
+        repository: ${{ github.actor }}/inochi-session-devtest-rpm
+        path: 'inochi-session-devtest'
         token: ${{ secrets.PAT }}
     
     - name: Download source files
@@ -393,17 +393,17 @@ jobs:
 
     - name: Update repo
       run : |
-        pushd inochi-session-nightly
+        pushd inochi-session-devtest
         ./update.sh $(source ../main/scripts/gitver.sh; git_version ../src) $(source ../main/scripts/gitver.sh; git_build ../src) $(git -C ../src rev-parse --short=7 HEAD)
         popd
-        cp -f src/dub.selections.json inochi-session-nightly/dub.selections.json
+        cp -f src/dub.selections.json inochi-session-devtest/dub.selections.json
 
     - name: Push rpm repo
       run: |
         git config --global user.name 'Sync Process'
         git config --global user.email 'sync-bot@users.noreply.github.com'
-        git -C inochi-session-nightly commit --allow-empty -am "RPM Update $(date -u +%Y%m%d%H%M)"
-        git -C inochi-session-nightly push
+        git -C inochi-session-devtest commit --allow-empty -am "RPM Update $(date -u +%Y%m%d%H%M)"
+        git -C inochi-session-devtest push
 
   build-linux-zip:
     runs-on: ubuntu-20.04
@@ -475,7 +475,7 @@ jobs:
     - name: Release to nightly tag
       uses: softprops/action-gh-release@v2
       with:
-        name: 'Unofficial Nightly Build'
+        name: 'Unofficial DevTest Build'
         tag_name: nightly
         files: 'out/inochi-session-linux-x86_64.zip'
 
@@ -588,7 +588,7 @@ jobs:
     - name: Release to nightly tag
       uses: softprops/action-gh-release@v2
       with:
-        name: 'Unofficial Nightly Build'
+        name: 'Unofficial DevTest Build'
         tag_name: nightly
         files: 'out/inochi-session-win32-x86_64.zip'
 
@@ -741,7 +741,7 @@ jobs:
     - name: Release to nightly tag
       uses: softprops/action-gh-release@v2
       with:
-        name: 'Unofficial Nightly Build'
+        name: 'Unofficial DevTest Build'
         tag_name: nightly
         files: 'out/Install_Inochi_Session.dmg'
 
