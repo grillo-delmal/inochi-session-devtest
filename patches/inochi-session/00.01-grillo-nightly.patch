@@ -7,7 +7,7 @@ index e68abec..97e4e1c 100644
                      if (uiImMenuItem(__("About"))) {
                          uiImDialog(__("Inochi Session"),
 -                        "Inochi Session %s\n(Inochi2D %s)\n\nMade with <3\nby Luna the Foxgirl and Inochi2D Contributors.".format(INS_VERSION, IN_VERSION), DialogLevel.Info);
-+                        "Inochi Session %s\n(Inochi2D %s)\n\nMade with <3\nby Luna the Foxgirl and Inochi2D Contributors.\n\DevTest version distributed by Grillo del Mal... use with caution.".format(INS_VERSION, IN_VERSION), DialogLevel.Info);
++                        "Inochi Session %s\n(Inochi2D %s)\n\nMade with <3\nby Luna the Foxgirl and Inochi2D Contributors.\n\nDevTest version distributed by Grillo del Mal... use with caution.".format(INS_VERSION, IN_VERSION), DialogLevel.Info);
                      }
                      
                      uiImEndMenu();
