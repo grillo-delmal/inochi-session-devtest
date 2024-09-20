@@ -7,7 +7,10 @@ source ./scripts/semver.sh
 CHECKOUT_TARGET=
 NIGHTLY=0
 VERIFY_SESSION=1
+PATCH_SESSION=1
 EXT_SESSION=
+YML_CREATOR=
+OUTPATH=.
 
 # Parse options
 for i in "$@"; do
@@ -22,9 +25,11 @@ By default it uses the version defined by the commit hash defined in the
 
     --target=<string>       Checkout a specific hash/tag/branch instead of
                             reading the one defined on the yaml file.
+    --yml-session=<string>  Search session commit in external file
     --ext-session=<string>  Search session commit in external file
     --nightly               Will checkout the latest commit from all 
                             dependency repositories.
+    --skip-patch            Skip patches.
     --force                 Skip verification.
     --help                  Display this help and exit
 EOL
@@ -32,6 +37,10 @@ EOL
             ;;
         -t=*|--target=*)
             CHECKOUT_TARGET="${i#*=}"
+            shift # past argument=value
+            ;;
+        -y=*|--yml-session=*)
+            YML_SESSION="${i#*=}"
             shift # past argument=value
             ;;
         -e=*|--ext-session=*)
@@ -44,6 +53,9 @@ EOL
         -f|--force)
             VERIFY_SESSION=0
             ;;
+        -s|--skip-patch)
+            PATCH_SESSION=0
+            ;;
         -*|--*)
             echo "Unknown option $i"
             exit 1
@@ -53,10 +65,17 @@ EOL
     esac
 done
 
+# If no outpath and yml, use yml path as output
+if [ "${OUTPATH}" == "." ] && ! [ -z ${YML_SESSION} ]; then
+    OUTPATH=$(dirname ${YML_SESSION})
+fi
+
 echo "### Verification Stage"
 if [ -z ${CHECKOUT_TARGET} ]; then
-    if [ -z ${EXT_SESSION} ]; then
+    if [ -z ${EXT_SESSION} ] && [ -z ${YML_SESSION} ]; then
         CHECKOUT_TARGET=$(python3 ./scripts/find-session-hash.py ./io.github.grillo_delmal.inochi-session.yml)
+    elif [ -z ${EXT_SESSION} ]; then
+        CHECKOUT_TARGET=$(python3 ./scripts/find-session-hash.py ${YML_SESSION})
     else
         CHECKOUT_TARGET=$(python3 ./scripts/find-session-hash.py ${EXT_SESSION} ext)
     fi
@@ -64,8 +83,8 @@ fi
 
 # Verify that we are not repeating work 
 if [ "${NIGHTLY}" == "0" ] && [ "${VERIFY_SESSION}" == "1" ]; then
-    if [ -f "./.dep_target" ]; then
-        LAST_PROC=$(cat ./.dep_target)
+    if [ -f "${OUTPATH}/.dep_target" ]; then
+        LAST_PROC=$(cat ${OUTPATH}/.dep_target)
         if [ "$CHECKOUT_TARGET" == "$LAST_PROC" ]; then
             echo "Dependencies already processed for current commit."
             exit 1
@@ -137,10 +156,12 @@ fi
 REQ_SEMVER_TAG=v$(grep -oP 'semver.*~>\K(.*)(?=")' ./deps/gitver/dub.sdl)
 git -C ./deps/semver/ checkout "$REQ_SEMVER_TAG" 2>/dev/null
 
-# Make sure to apply patches beforehand
-popd
-bash ./scripts/apply_local_patches.sh dep.build/deps dep.build/inochi-session
-pushd dep.build
+if [ "${PATCH_CREATOR}" == "1" ]; then
+    # Make sure to apply patches beforehand
+    popd
+    bash ./scripts/apply_local_patches.sh dep.build/deps dep.build/inochi-session
+    pushd dep.build
+fi
 
 echo "### Build Stage"
 
@@ -182,11 +203,11 @@ python3 ./scripts/flatpak-dub-generator.py \
 # the project libraries.
 python3 ./scripts/write-dub-deps.py \
     ./dep.build/dub-dependencies.json \
-    ./dub-add-local-sources.json \
+    ${OUTPATH}/dub-add-local-sources.json \
     ./dep.build/deps
  
 if [ "${NIGHTLY}" == "1" ]; then
-    rm -f ./.dep_target
+    rm -f ${OUTPATH}/.dep_target
 else
-    echo "$CHECKOUT_TARGET" > ./.dep_target
+    echo "$CHECKOUT_TARGET" > ${OUTPATH}/.dep_target
 fi
