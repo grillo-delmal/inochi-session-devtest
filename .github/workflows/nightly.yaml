@@ -553,7 +553,7 @@ jobs:
 
           # Build the project, with its main file included, without unittests
           $Env:DFLAGS = '-g'
-          dub build --skip-registry=all --build=debug --config=win32-nightly --debug=InExperimental
+          dub build --skip-registry=all --build=debug --config=win32-nightly
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4

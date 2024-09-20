@@ -51,7 +51,7 @@ modules:
       - dub add-path .flatpak-dub;
         dub add-local .flatpak-dub/semver/*/semver;
         dub add-local .flatpak-dub/gitver/*/gitver;
-        dub describe --skip-registry=all --build=release --config=linux-nightly --debug=InExperimental
+        dub describe --skip-registry=all --build=release --config=linux-nightly
 
     sources:
       - dub-add-local-sources.json
@@ -88,7 +88,7 @@ modules:
         dub add-local .flatpak-dub/semver/*/semver;
         dub add-local .flatpak-dub/gitver/*/gitver;
         dub build --skip-registry=all --config=meta;
-        dub build --skip-registry=all --build=release --config=barebones --debug=InExperimental --override-config=facetrack-d/web-adaptors
+        dub build --skip-registry=all --build=release --config=barebones --override-config=facetrack-d/web-adaptors
       - install -Dm 755 ./out/inochi-session /app/bin/inochi-session
       - install -Dm 755 ./out/cimgui.so /app/bin/cimgui.so
 
