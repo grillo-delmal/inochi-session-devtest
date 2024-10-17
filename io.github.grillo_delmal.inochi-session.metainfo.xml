@@ -39,5 +39,9 @@
     <control>pointing</control>
     <control>keyboard</control>
   </recommends>
+  <branding>
+    <color type="primary" scheme_preference="light">#dbdbdb</color>
+    <color type="primary" scheme_preference="dark">#242424</color>
+  </branding>
   <content_rating type="oars-1.1"/>
 </component>

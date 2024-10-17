@@ -1,10 +1,10 @@
 id: io.github.grillo_delmal.inochi-session
 runtime: org.freedesktop.Platform
-runtime-version: '23.08'
+runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.ldc
-  - org.freedesktop.Sdk.Extension.llvm16
+  - org.freedesktop.Sdk.Extension.llvm18
 command: inochi-session
 finish-args:
   - --device=dri          # OpenGL rendering (change for all if webcam support implemented)
@@ -24,10 +24,12 @@ modules:
         commands: 
           - sed -i 's|/usr/local|/app|' ./Makefile
 
-  - name: Inochi-Session-Source
+  - name: sources
     buildsystem: simple
     build-options:
       append-path: /usr/lib/sdk/ldc/bin
+      prepend-path: /usr/lib/sdk/llvm18/bin
+      prepend-ld-library-path: /usr/lib/sdk/llvm18/lib
     build-commands:
       # Apply lib patches
       - bash ./patches/apply_patches.sh .flatpak-dub .
@@ -51,7 +53,7 @@ modules:
       - dub add-path .flatpak-dub;
         dub add-local .flatpak-dub/semver/*/semver;
         dub add-local .flatpak-dub/gitver/*/gitver;
-        dub describe --skip-registry=all --build=release --config=linux-nightly
+        dub describe --skip-registry=all --config=barebones --override-config=facetrack-d/web-adaptors
 
     sources:
       - dub-add-local-sources.json
@@ -60,11 +62,12 @@ modules:
         path: patches/
         dest: patches/
 
-  # --- Inochi Session ---
-  - name: Inochi-Session
+  - name: inochi-session
     buildsystem: simple
     build-options:
       append-path: /usr/lib/sdk/ldc/bin
+      prepend-path: /usr/lib/sdk/llvm18/bin
+      prepend-ld-library-path: /usr/lib/sdk/llvm18/lib
       env:
         DFLAGS: '-g --d-debug'
     build-commands:
@@ -89,12 +92,12 @@ modules:
         dub add-local .flatpak-dub/gitver/*/gitver;
         dub build --skip-registry=all --config=update-version;
         dub build --skip-registry=all --config=meta;
-        dub build --skip-registry=all --build=release --config=barebones --override-config=facetrack-d/web-adaptors
+        dub build --skip-registry=all --config=barebones --override-config=facetrack-d/web-adaptors
       - install -Dm 755 ./out/inochi-session /app/bin/inochi-session
       - install -Dm 755 ./out/cimgui.so /app/bin/cimgui.so
-
       # Uncomment when session translations are actually a thing. 
       #- install -Dm644 ./otl/*.mo /app/bin
+      - install -Dm644 inochi-session.desktop /app/share/applications/io.github.grillo_delmal.inochi-session.desktop
 
     sources:
       - dub-add-local-sources.json
@@ -102,23 +105,19 @@ modules:
       - type: dir
         path: patches/
         dest: patches/
+      - type: file
+        path: inochi-session.desktop
 
   - name: Metadata
     buildsystem: simple
     build-commands:
-
-      - install -Dm644 io.github.grillo_delmal.inochi-session.metainfo.xml /app/share/metainfo/io.github.grillo_delmal.inochi-session.metainfo.xml
-      - install -Dm644 ./vpuppet-playing.png /app/share/icons/hicolor/128x128/apps/io.github.grillo_delmal.inochi-session.png
-      - install -Dm644 inochi-session.desktop /app/share/applications/io.github.grillo_delmal.inochi-session.desktop
-
+      - install -Dm644 ./metainfo/io.github.grillo_delmal.inochi-session.metainfo.xml /app/share/metainfo/io.github.grillo_delmal.inochi-session.metainfo.xml
+      - install -Dm644 ./branding/vpuppet-playing.png /app/share/icons/hicolor/128x128/apps/io.github.grillo_delmal.inochi-session.png
     sources:
       - type: git
         url: https://github.com/grillo-delmal/vpuppet-icons.git
         commit: 5a0504eed1fb1b1a80415b17d9c860e01bebb191
-
-      - type: file
-        path: inochi-session.desktop
-
+        dest: ./branding
       - type: file
         path: io.github.grillo_delmal.inochi-session.metainfo.xml
-
+        dest: ./metainfo

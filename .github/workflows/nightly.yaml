@@ -69,7 +69,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: inochi-session-source
-        path: .flatpak-builder/build/Inochi-Session-Source-1/*
+        path: .flatpak-builder/build/sources-1/*
         retention-days: 1
         include-hidden-files: true
 

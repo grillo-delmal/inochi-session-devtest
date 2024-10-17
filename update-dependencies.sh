@@ -27,6 +27,7 @@ By default it uses the version defined by the commit hash defined in the
                             reading the one defined on the yaml file.
     --yml-session=<string>  Search session commit in external file
     --ext-session=<string>  Search session commit in external file
+    --outpath               Path where to write dep results.
     --nightly               Will checkout the latest commit from all 
                             dependency repositories.
     --skip-patch            Skip patches.
@@ -45,6 +46,10 @@ EOL
             ;;
         -e=*|--ext-session=*)
             EXT_SESSION="${i#*=}"
+            shift # past argument=value
+            ;;
+        -o=*|--outpath=*)
+            OUTPATH="${i#*=}"
             shift # past argument=value
             ;;
         -n|--nightly)
@@ -118,8 +123,8 @@ git clone https://github.com/Inochi2D/i2d-imgui.git
 git clone https://github.com/Inochi2D/i2d-opengl.git
 git clone https://github.com/Inochi2D/inmath.git
 git clone https://github.com/Inochi2D/inui.git
-git clone https://github.com/Inochi2D/vmc-d.git
 git clone https://github.com/Inochi2D/numem.git
+git clone https://github.com/Inochi2D/vmc-d.git
 
 # Fixme Use v0_8 branch until v9 is usable
 git -C ./inochi2d checkout v0_8
@@ -179,7 +184,9 @@ done
 # Download dependencies and generate the dub.selections.json file in the process
 pushd inochi-session
 dub describe  \
-    --compiler=ldc2 --build=release --config=linux-full \
+    --compiler=ldc2 \
+    --config=barebones \
+    --override-config=facetrack-d/web-adaptors \
     --cache=local \
     >> ../describe.json
 popd #inochi-session
