@@ -1,0 +1,50 @@
+name: (Publish) - Signal to Update RPM
+
+on:
+  workflow_call:
+    inputs:
+      target_ref:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  signal-rpm:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        path: 'main'
+        ref: '${{ inputs.target_ref }}'
+
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ github.actor }}/inochi-session-devtest-rpm
+        path: 'inochi-session-devtest'
+        token: ${{ secrets.PAT }}
+    
+    - name: Download source files
+      uses: actions/download-artifact@v4
+      with:
+        name: inochi-session-source
+        path: 'src/'
+
+    - name: Update repo
+      run : |
+        pushd inochi-session-devtest
+        ./update.sh $(source ../main/scripts/gitver.sh; git_version ../src) $(source ../main/scripts/gitver.sh; git_build ../src) $(git -C ../src rev-parse --short=7 HEAD)
+        popd
+        cp -f src/dub.selections.json inochi-session-devtest/dub.selections.json
+
+    - name: Push rpm repo
+      run: |
+        git config --global user.name 'Sync Process'
+        git config --global user.email 'sync-bot@users.noreply.github.com'
+        git -C inochi-session-devtest commit --allow-empty -am "RPM Update $(date -u +%Y%m%d%H%M)"
+        git -C inochi-session-devtest push
