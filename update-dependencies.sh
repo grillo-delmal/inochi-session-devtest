@@ -160,7 +160,7 @@ fi
 REQ_SEMVER_TAG=v$(grep -oP 'semver.*~>\K(.*)(?=")' ./deps/gitver/dub.sdl)
 git -C ./deps/semver/ checkout "$REQ_SEMVER_TAG" 2>/dev/null
 
-if [ "${PATCH_CREATOR}" == "1" ]; then
+if [ "${PATCH_SESSION}" == "1" ]; then
     # Make sure to apply patches beforehand
     popd
     bash ./scripts/apply_local_patches.sh dep.build/deps dep.build/inochi-session
