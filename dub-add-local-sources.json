@@ -2,19 +2,19 @@
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/bindbc-loader/1.0.3.zip",
-        "sha256": "611ea48030b09fec7fb4fead816a4e1c8b1ae2c1d5962c1055ecb25452b2d6c6",
+        "sha256": "3244120d599fdae432dd3048339bd5cbe72b04740c007a58775042b13843c834",
         "dest": ".flatpak-dub/bindbc-loader/1.0.3/bindbc-loader"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/bindbc-lua/0.5.1.zip",
-        "sha256": "2c458d99cd43c96ee720fd8c184e1bf317d2514e6b7c509b9d47b6a705e74fde",
+        "sha256": "87412b954cc9e38ead8c58ea8284baa1e6d5be9e3f652daae969d0dee965d484",
         "dest": ".flatpak-dub/bindbc-lua/0.5.1/bindbc-lua"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/bindbc-sdl/1.1.3.zip",
-        "sha256": "f258a304607ff390bb9e0cf9c1840a35888cebcae930bb85f0891e0da115f538",
+        "sha256": "7e1e86862cf2f8da7e7ce85235773056c59c03cc508b1874864cb75ca104ef88",
         "dest": ".flatpak-dub/bindbc-sdl/1.1.3/bindbc-sdl"
     },
     {
@@ -27,13 +27,13 @@
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/ddbus/3.0.0-beta.2.zip",
-        "sha256": "8c4ffce9f3e731b431017e76c06c13fad29337b8f8537b26480b725d658296ce",
+        "sha256": "9a695e0894b5471285b61f9b98000e650e6e6c2fdfdc27043a9fc3c537ddaf05",
         "dest": ".flatpak-dub/ddbus/3.0.0-beta.2/ddbus"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/diet-ng/1.8.3.zip",
-        "sha256": "cec50647abf92f2bb91704b8cb70c1771c5c7f6b792b5cc5be6073d9debceac1",
+        "sha256": "50b72b055f2c974e21976225f34681145c2a3e1bbc9ba0f1d23e6c147137a89c",
         "dest": ".flatpak-dub/diet-ng/1.8.3/diet-ng"
     },
     {
@@ -46,13 +46,13 @@
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/dunit/1.0.16.zip",
-        "sha256": "14cc8a434d78e4fa6edcead9b1ab03f164a15caed9920da245f66bd78fa4f3c0",
+        "sha256": "abef657b335e31a1c489b57ef222deffdc425b4506841e90306f59850b242f5d",
         "dest": ".flatpak-dub/dunit/1.0.16/dunit"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/eventcore/0.9.35.zip",
-        "sha256": "b708630f4de07b0dd62b54b485684a565c4c193ccac165410f3a7ce7e99fcdd4",
+        "sha256": "130897f23608fb361601c19541ccdec52dc78eb41616186e1973980c58ad9202",
         "dest": ".flatpak-dub/eventcore/0.9.35/eventcore"
     },
     {
@@ -94,7 +94,7 @@
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/imagefmt/2.1.2.zip",
-        "sha256": "61141c989ea2acadf5b010e27c0ff0fb54f93dec5d227a51e1491465f00f58fa",
+        "sha256": "10f4182efc4fc3846561ca702b3207493f736639498b2dc61a3adcee2bb18736",
         "dest": ".flatpak-dub/imagefmt/2.1.2/imagefmt"
     },
     {
@@ -121,25 +121,25 @@
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/lumars/1.6.1.zip",
-        "sha256": "17a0653f4e6e95eb6b697a3f8ec7fb9b6856ba0238d257648ecf0f8c9f0c496d",
+        "sha256": "292f21bce5fc2bd389b5cbf806e86a563b3fc8338594737320eb89cd317cedef",
         "dest": ".flatpak-dub/lumars/1.6.1/lumars"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/mir-algorithm/3.22.3.zip",
-        "sha256": "3eb875f98bf28d94f2df5dc68d0b94859f9201a8f96b231548ee73e25c1b37d1",
+        "sha256": "37ff16dc57bacc15a3c641d8bd740112f06b00f056a27acc9ab44199986a9f7c",
         "dest": ".flatpak-dub/mir-algorithm/3.22.3/mir-algorithm"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/mir-core/1.7.1.zip",
-        "sha256": "64f2116e672fb6129b6afbaacfcafb7b673f11e9f459bdec1399de14a268f070",
+        "sha256": "b2a0ec3dd760b44d73edb50ff62f75f4b5c9bfc38573c207bf0556e610b1a196",
         "dest": ".flatpak-dub/mir-core/1.7.1/mir-core"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/mir-linux-kernel/1.2.1.zip",
-        "sha256": "ad516333b2a8c64a152345fa407d42fc3b6b074f591d489baea66a4c8831bd70",
+        "sha256": "782bacaaeaeeb2622d8d70e8cc64ebeb0c042caf1e7a2644dbe040db8ed2208a",
         "dest": ".flatpak-dub/mir-linux-kernel/1.2.1/mir-linux-kernel"
     },
     {
@@ -152,73 +152,73 @@
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/openssl/3.3.4.zip",
-        "sha256": "c15c270cbc361dc6afa0aca2b017a510cc2aa467c2055439cd4de86cdc597b32",
+        "sha256": "de43db9b691921f4ea189e5e036b5e8b7f35e310b2512baaf7322de89d0f479f",
         "dest": ".flatpak-dub/openssl/3.3.4/openssl"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/openssl-static/1.0.5+3.0.8.zip",
-        "sha256": "f7712edd99cf1e16102636cf23a8c943761990e06b7c7acf633e4e3591c42605",
+        "sha256": "53f417cc916f36ee67e06a157e34d7354068a0698f72365e1a70adec93f8f872",
         "dest": ".flatpak-dub/openssl-static/1.0.5+3.0.8/openssl-static"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/silly/1.1.1.zip",
-        "sha256": "c801ab0c1d50cb34e557377cc1ab548657dd9c861bde3a8759d5765a98aa5ca2",
+        "sha256": "4bce750403f703ae1596eecc54c42b67716aaeb11c97b9bb847140f497bd15d0",
         "dest": ".flatpak-dub/silly/1.1.1/silly"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/stdx-allocator/2.77.5.zip",
-        "sha256": "fc9e63ec5c5dfafc1e8edd806e94468c4e1734ae14d138649ece12fe49fe7b29",
+        "sha256": "52cdd388b83f5a78fb9b57c176500cf0b828fc91c82b09b2f2522792b94003bd",
         "dest": ".flatpak-dub/stdx-allocator/2.77.5/stdx-allocator"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/taggedalgebraic/0.11.23.zip",
-        "sha256": "a53a77207ab2d6e575c214b451196499d5b05ff7d4efc2407319aa2c1107487e",
+        "sha256": "33157a1251f56f9070dcc7c967f5e970f563e3e7d3c692f483f84ade56a52aae",
         "dest": ".flatpak-dub/taggedalgebraic/0.11.23/taggedalgebraic"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/tinyfiledialogs/0.10.1.zip",
-        "sha256": "51cbe58072371f5260d17bad4e283e541db8371e205380895fd9b1784e666ec3",
+        "sha256": "d1c155d98f91f649a3ce681d145cd02a98dc1cdd161808c62a5d84747cc26fcc",
         "dest": ".flatpak-dub/tinyfiledialogs/0.10.1/tinyfiledialogs"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/vibe-container/1.5.0.zip",
-        "sha256": "d79664df892ec1029440c37dab98b656bb12f3165ea5740251dd3510e1bfbb3a",
+        "sha256": "127fb2a553de342ef410bf61cb5be1453e30f2fc4309069ed6fe63f6a983cb9d",
         "dest": ".flatpak-dub/vibe-container/1.5.0/vibe-container"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/vibe-core/2.10.1.zip",
-        "sha256": "59c06df4392cbcfad9494a2b508aac5f7b86e19b9915a909d20d866bd438ab2d",
+        "sha256": "acff818f5d6d021284c25b0b1523e916cf01d20a9249dc8751b89b6b3cc89ef7",
         "dest": ".flatpak-dub/vibe-core/2.10.1/vibe-core"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/vibe-http/1.1.2.zip",
-        "sha256": "a71da86980668164dfa3977379dc41ab1ef0e86ea98e27d5d7d1044f1ad7025f",
+        "sha256": "d5edfd910a65e22cf45e7e2f03b6ecc807d7821169310d156b9e48063764a547",
         "dest": ".flatpak-dub/vibe-http/1.1.2/vibe-http"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/vibe-inet/1.1.1.zip",
-        "sha256": "7bc80569a810d78374ec655dc1c205cfe47dc3bb6e57de51248da2c34cf191a3",
+        "sha256": "0965ecbc3a26120bc3884f9ee58e336208bd9a0bc2e7f90468d7ccb015627e0c",
         "dest": ".flatpak-dub/vibe-inet/1.1.1/vibe-inet"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/vibe-serialization/1.0.7.zip",
-        "sha256": "0716dc10827af2458bf794145c2525ac12f88b768b097d2e43a3432d025ef1d2",
+        "sha256": "ca781db4b4e006c4f73fd385505ce39496fae58c9f66bbfd7772d53f13ef3249",
         "dest": ".flatpak-dub/vibe-serialization/1.0.7/vibe-serialization"
     },
     {
         "type": "archive",
         "url": "https://code.dlang.org/packages/vibe-stream/1.1.1.zip",
-        "sha256": "097a9942ccb5da4d88891e6c82429b6df004fd951c345f8499c23bf1e9ce863b",
+        "sha256": "ffdc30088b59bc85b65798a6540712f0e4c9587ec09ac1a034cd95be381bf4db",
         "dest": ".flatpak-dub/vibe-stream/1.1.1/vibe-stream"
     },
     {
